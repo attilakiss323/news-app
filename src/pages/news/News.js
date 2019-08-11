@@ -1,28 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import Async from 'crocks/Async';
 
 import { api } from '../../constants';
-import { Heading, Card } from '../../components';
-
-const Page = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const NewsHeading = styled(Heading)`
-  display: list-item;
-  list-style-type: disc;
-  list-style-position: inside;
-  margin-left: 3rem;
-`;
-
-const NewsList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  padding-top: 2rem;
-  justify-content: center;
-`;
+import { Card, Page, CardList } from '../../components';
 
 function News() {
   const [news, setNews] = useState([]);
@@ -43,9 +23,8 @@ function News() {
   }, []);
 
   return (
-    <Page>
-      <NewsHeading type="h1">Top news from Great Brittain:</NewsHeading>
-      <NewsList>
+    <Page heading="Top news from Great Brittain:" headingType="h1">
+      <CardList>
         {news.map(article => (
           <Card
             key={article.title}
@@ -54,7 +33,7 @@ function News() {
             description={article.description}
           />
         ))}
-      </NewsList>
+      </CardList>
     </Page>
   );
 }

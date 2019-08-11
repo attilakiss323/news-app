@@ -141,7 +141,7 @@ const Wrap = styled.div`
   display: felx;
 `;
 
-function Wrapper({ children }) {
+function Wrapper({ headingType, Heading, children }) {
   return (
     <Wrap>
       <Reset />

@@ -5,6 +5,7 @@ import Icon from '../icon/Icon';
 import Tooltip from '../tooltip/Tooltip';
 
 const StyledCard = styled.div`
+  position: relative;
   flex-direction: column;
   height: 27rem;
   width: 27rem;
@@ -37,6 +38,10 @@ const More = styled.div`
   display: block;
   text-align: right;
   margin-top: 1rem;
+  align-self: flex-end;
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
 
   > span {
     vertical-align: top;
