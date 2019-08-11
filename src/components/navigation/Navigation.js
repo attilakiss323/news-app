@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'react-router';
 
 import Button from '../button/Button';
+import { urls } from '../../constants';
 
 const StickyHeader = styled.div`
   display: flex;
@@ -24,18 +26,41 @@ const NavLangBtn = styled(Button)`
   margin: 0;
 `;
 
-function Navigation() {
+function Navigation({ history }) {
+  const handleClick = (e, route) => {
+    e.preventDefault();
+    history.push(route);
+  };
+
   return (
     <StickyHeader>
       <NavBtn
         inverted
-        backgroundColor="grey4"
+        isActive={history.location.pathname === '/'}
+        link="/"
         icon="home"
         iconSize={16}
         text="Top News"
+        onClick={e => handleClick(e, urls.news)}
       />
-      <NavBtn inverted icon="categories" iconSize={16} text="Categories" />
-      <NavBtn inverted icon="search" iconSize={16} text="Search" />
+      <NavBtn
+        inverted
+        isActive={history.location.pathname === '/categories'}
+        link="/categories"
+        icon="categories"
+        iconSize={16}
+        text="Categories"
+        onClick={e => handleClick(e, urls.categories)}
+      />
+      <NavBtn
+        inverted
+        isActive={history.location.pathname === '/search'}
+        link="/search"
+        icon="search"
+        iconSize={16}
+        text="Search"
+        onClick={e => handleClick(e, urls.search)}
+      />
       <Filler />
       <NavLangBtn inverted backgroundColor="grey4" text="GB" />
       <NavLangBtn inverted text="US" />
@@ -43,4 +68,4 @@ function Navigation() {
   );
 }
 
-export default Navigation;
+export default withRouter(Navigation);
