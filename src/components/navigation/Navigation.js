@@ -10,7 +10,7 @@ const StickyHeader = styled.div`
   position: fixed;
   width: 100%;
   top: 0;
-  background-color: ${({ theme }) => theme.grey3};
+  background-color: ${({ theme }) => theme.color.grey3};
 `;
 
 const NavBtn = styled(Button)`

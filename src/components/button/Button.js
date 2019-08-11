@@ -5,7 +5,8 @@ import Icon from '../icon/Icon';
 
 const BtnIcon = styled(Icon)`
   margin-right: 0.4rem;
-  fill: ${({ inverted, theme }) => (inverted ? theme.white : theme.black)};
+  fill: ${({ inverted, theme: { color } }) =>
+    inverted ? color.white : color.black};
 `;
 
 const BtnText = styled.span`
@@ -17,7 +18,7 @@ const BtnLink = styled.a`
   text-decoration: none;
 
   &:visited {
-    color: ${({ theme }) => theme.white};
+    color: ${({ theme }) => theme.color.white};
   }
 `;
 
@@ -26,11 +27,13 @@ const Btn = styled.div`
   width: 8rem;
   text-align: center;
   margin: 0 1rem;
-  padding: 0.5rem;
-  color: ${({ inverted, theme }) => (inverted ? theme.white : theme.black)};
-  background-color: ${({ theme, backgroundColor }) => theme[backgroundColor]};
+  padding: 0.8rem 0.5rem;
+  color: ${({ inverted, theme: { color } }) =>
+    inverted ? color.white : color.black};
+  background-color: ${({ theme, backgroundColor }) =>
+    theme.color[backgroundColor]};
   border: ${({ theme, inverted }) =>
-    inverted ? 'none' : `1px solid ${theme.grey3}`};
+    inverted ? 'none' : `1px solid ${theme.color.grey3}`};
   border-radius: 5%;
 `;
 

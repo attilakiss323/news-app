@@ -137,7 +137,7 @@ const reset = css`
 const Reset = createGlobalStyle`${reset}`;
 
 const Wrap = styled.div`
-  margin-top: 4rem;
+  margin: 5rem;
   display: felx;
 `;
 

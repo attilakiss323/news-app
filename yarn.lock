@@ -2797,6 +2797,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+crocks@^0.12.3:
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/crocks/-/crocks-0.12.3.tgz#048e3d84d21347abfc3b843562d9dc1de916cb12"
+  integrity sha512-sHLgwOLI6BNrtir62is9yXnrzdIo6Q6Qr4Yhy6SabAdvbFbppDEQhawnu9FGJkwGmmntEebUIKAIkjkHj+fj0A==
+
 cross-spawn@6.0.5, cross-spawn@^6.0.0, cross-spawn@^6.0.5:
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
