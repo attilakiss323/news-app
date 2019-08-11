@@ -13,14 +13,16 @@ const PageHeading = styled(Heading)`
   display: list-item;
   list-style-type: disc;
   list-style-position: inside;
-  margin-left: 3rem;
+  margin-left: ${({ left }) => left || '3rem'};
   margin-bottom: 2rem;
 `;
 
-function Page({ heading, headingType, children }) {
+function Page({ heading, headingType, left, children }) {
   return (
     <StyledPage>
-      <PageHeading type={headingType}>{heading}</PageHeading>
+      <PageHeading left={left} type={headingType}>
+        {heading}
+      </PageHeading>
       {children}
     </StyledPage>
   );

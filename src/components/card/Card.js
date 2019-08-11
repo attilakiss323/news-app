@@ -52,11 +52,12 @@ function handleLongTitle(title) {
   return title.length > 95 ? <span>{title.slice(0, 95)}&hellip;</span> : title;
 }
 
-function Card({ title, img, description }) {
+function Card(props) {
+  const { title, img, description } = props;
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <StyledCard>
+    <StyledCard {...props}>
       {showTooltip && <Tooltip>{title}</Tooltip>}
       <Title
         onMouseOver={title.length > 95 ? () => setShowTooltip(true) : () => {}}
