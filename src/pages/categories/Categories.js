@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Async from 'crocks/Async';
 import styled from 'styled-components';
+import { withRouter } from 'react-router';
 
 import { api } from '../../constants';
 import { upperCaseFirstLetter } from '../../common';
@@ -48,6 +49,7 @@ const CategoryHeading = styled(Heading)`
   list-style-type: disc;
   list-style-position: inside;
   margin-left: 2rem;
+  cursor: pointer;
 `;
 
 const CategoryCard = styled(Card)`
@@ -92,7 +94,7 @@ function getCategories(category) {
   )();
 }
 
-function Categories() {
+function Categories({ history }) {
   const [newsList, setNewsList] = useState([]);
   const [transitionValue, setTransitionValue] = useState({
     business: 0,
@@ -120,7 +122,10 @@ function Categories() {
       <CategoriesList>
         {newsList.map((news, i) => (
           <div key={categories[i]}>
-            <CategoryHeading type="h2">
+            <CategoryHeading
+              type="h2"
+              onClick={() => history.push(`/category/${categories[i]}`)}
+            >
               {upperCaseFirstLetter(categories[i])}
             </CategoryHeading>
             <CategoryList>
@@ -166,4 +171,4 @@ function Categories() {
   );
 }
 
-export default Categories;
+export default withRouter(Categories);
