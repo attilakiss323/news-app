@@ -6,6 +6,7 @@ import { createBrowserHistory } from 'history';
 import { Navigation, Wrapper } from './components';
 import { theme } from './constants';
 import Routes from './routes';
+import { NewsStoreProvider } from './common';
 
 function App() {
   const history = createBrowserHistory();
@@ -13,12 +14,14 @@ function App() {
   return (
     <Router history={history}>
       <ThemeProvider theme={theme}>
-        <>
-          <Navigation />
-          <Wrapper>
-            <Routes />
-          </Wrapper>
-        </>
+        <NewsStoreProvider>
+          <>
+            <Navigation />
+            <Wrapper>
+              <Routes />
+            </Wrapper>
+          </>
+        </NewsStoreProvider>
       </ThemeProvider>
     </Router>
   );

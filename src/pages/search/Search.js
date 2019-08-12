@@ -1,30 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import Async from 'crocks/Async';
+import React, { useEffect, useState, useContext } from 'react';
+import { withRouter } from 'react-router';
 
-import { api } from '../../constants';
 import { Card, Page, SearchField, CardList } from '../../components';
+import { getNews, NewsStoreContext } from '../../common';
 
-function Search() {
+function Search({ history }) {
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
-  const [news, setNews] = useState([]);
+  const {
+    state: { news },
+    actions
+  } = useContext(NewsStoreContext);
 
   useEffect(() => {
     if (debouncedSearchValue) {
-      Async.fromPromise(() =>
-        fetch(
-          `${
-            api({
-              params: {
-                country: 'us',
-                q: debouncedSearchValue,
-                apiKey: process.env.REACT_APP_NEWS_APP_KEY
-              }
-            }).topNews
-          }`
-        ).then(res => res.json())
-      )().fork(err => console.log(err), res => setNews(res.articles));
+      getNews({ country: 'us', search: debouncedSearchValue }).fork(
+        err => console.log(err),
+        res => actions.getNews(res.articles)
+      );
     } else {
-      setNews([]);
+      actions.getNews([]);
     }
   }, [debouncedSearchValue]);
 
@@ -37,6 +31,7 @@ function Search() {
       <CardList>
         {news.map(article => (
           <Card
+            navigate={history.push}
             key={article.title}
             title={article.title}
             img={article.urlToImage}
@@ -48,4 +43,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default withRouter(Search);

@@ -35,6 +35,7 @@ const Img = styled.img`
 `;
 
 const More = styled.div`
+  cursor: pointer;
   display: block;
   text-align: right;
   margin-top: 1rem;
@@ -53,7 +54,7 @@ function handleLongTitle(title) {
 }
 
 function Card(props) {
-  const { title, img, description } = props;
+  const { title, img, description, navigate, category = '' } = props;
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
@@ -67,7 +68,15 @@ function Card(props) {
       </Title>
       <Img src={img} />
       <Description>{description}</Description>
-      <More>
+      <More
+        onClick={() =>
+          navigate(
+            `/article/${title.replace(/\?+/g, '~')}${
+              category ? '/' + category : ''
+            }`
+          )
+        }
+      >
         <span>More</span>
         <Icon size={16} kind="chevron-right" />
       </More>

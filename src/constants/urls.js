@@ -2,5 +2,6 @@ export default {
   news: '/',
   categories: '/categories',
   category: '/category/:id',
-  search: '/search'
+  search: '/search',
+  article: '/article/:id/:category?'
 };

@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import Async from 'crocks/Async';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router';
 
-import { api } from '../../constants';
 import { upperCaseFirstLetter } from '../../common';
 import { Card, Page, Icon, Heading } from '../../components';
+import { getNewsList, NewsStoreContext } from '../../common';
 
 const categories = [
   'business',
@@ -77,25 +76,11 @@ function animateTransition({
   }
 }
 
-function getCategories(category) {
-  return Async.fromPromise(() =>
-    fetch(
-      `${
-        api({
-          params: {
-            country: 'us',
-            apiKey: process.env.REACT_APP_NEWS_APP_KEY,
-            category: category,
-            pageSize: 5
-          }
-        }).topNews
-      }`
-    ).then(res => res.json())
-  )();
-}
-
 function Categories({ history }) {
-  const [newsList, setNewsList] = useState([]);
+  const {
+    state: { newsList },
+    actions
+  } = useContext(NewsStoreContext);
   const [transitionValue, setTransitionValue] = useState({
     business: 0,
     entertainment: 0,
@@ -107,9 +92,9 @@ function Categories({ history }) {
   });
 
   useEffect(() => {
-    Async.all(categories.map(category => getCategories(category))).fork(
+    getNewsList({ country: 'us', categories }).fork(
       err => console.log(err),
-      res => setNewsList(res)
+      res => actions.getNewsList(res)
     );
   }, []);
 
@@ -143,12 +128,14 @@ function Categories({ history }) {
               />
               {news.articles.map(article => (
                 <CategoryCard
+                  navigate={history.push}
                   category={categories[i]}
                   transitionValue={transitionValue}
                   key={article.description}
                   title={article.title}
                   img={article.urlToImage}
                   description={article.description}
+                  category={categories[i]}
                 />
               ))}
               <ChevronRight

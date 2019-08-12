@@ -1,25 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import Async from 'crocks/Async';
+import React, { useEffect, useContext } from 'react';
+import { withRouter } from 'react-router';
 
-import { api } from '../../constants';
 import { Card, Page, CardList } from '../../components';
+import { getNews, NewsStoreContext } from '../../common';
 
-function News() {
-  const [news, setNews] = useState([]);
+function News({ history }) {
+  const {
+    state: { news },
+    actions
+  } = useContext(NewsStoreContext);
 
   useEffect(() => {
-    Async.fromPromise(() =>
-      fetch(
-        `${
-          api({
-            params: {
-              country: 'us',
-              apiKey: process.env.REACT_APP_NEWS_APP_KEY
-            }
-          }).topNews
-        }`
-      ).then(res => res.json())
-    )().fork(err => console.log(err), res => setNews(res.articles));
+    getNews({ country: 'us' }).fork(
+      err => console.log(err),
+      res => actions.getNews(res.articles)
+    );
   }, []);
 
   return (
@@ -31,6 +26,7 @@ function News() {
             title={article.title}
             img={article.urlToImage}
             description={article.description}
+            navigate={history.push}
           />
         ))}
       </CardList>
@@ -38,4 +34,4 @@ function News() {
   );
 }
 
-export default News;
+export default withRouter(News);
