@@ -13,8 +13,13 @@ const PageHeading = styled(Heading)`
   display: list-item;
   list-style-type: disc;
   list-style-position: inside;
-  margin-left: ${({ left }) => left || '3rem'};
+  margin-left: ${({ left }) => left || '7rem'};
   margin-bottom: 2rem;
+  max-width: 60%;
+
+  @media (max-width: 1200px) {
+    margin-left: 6rem;
+  }
 `;
 
 function Page({ heading, headingType, left, children }) {

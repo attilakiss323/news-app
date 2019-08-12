@@ -8,6 +8,14 @@ const Image = styled.img`
   width: 70%;
   margin: 0 auto;
   display: block;
+
+  @media (max-width: 1440px) and (min-width: 1200px) {
+    max-width: 80%;
+  }
+
+  @media (max-width: 1200px) {
+    max-width: 90%;
+  }
 `;
 
 const Content = styled.div`
@@ -16,6 +24,15 @@ const Content = styled.div`
   margin-top: 2rem;
   display: block;
   font-family: ${({ theme }) => theme.font.primary};
+
+  @media (max-width: 1440px) and (min-width: 1200px) {
+    max-width: 80%;
+  }
+
+  @media (max-width: 1200px) {
+    max-width: 90%;
+    font-size: ${({ theme, type }) => `${theme.font.heading.h3.fontSize}rem`};
+  }
 `;
 
 function Article({

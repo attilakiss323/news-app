@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 
 import { upperCaseFirstLetter } from '../../common';
 import { Card, Page, Icon, Heading } from '../../components';
-import { getNewsList, NewsStoreContext } from '../../common';
+import { getNewsList, NewsStoreContext, dimensionsHOC } from '../../common';
 
 const categories = [
   'business',
@@ -17,10 +17,21 @@ const categories = [
 ];
 
 const CategoriesList = styled.div`
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
+  margin: 0 5rem;
+  overflow: hidden;
+
+  @media (max-width: 1675px) and (min-width: 1070px) {
+    width: 64rem;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 1070px) {
+    width: 32.6rem;
+    margin: 0 auto;
+  }
 `;
 
 const CategoryList = styled.div`
@@ -61,27 +72,37 @@ function animateTransition({
   direction,
   transitionValue,
   setTransitionValue,
-  category
+  category,
+  width
 }) {
-  if (direction === 'right' && transitionValue[category] > -60) {
+  const slideBy = 31.15;
+  let rightVal = -60;
+  if (width > 1070 && width < 1675) {
+    rightVal = -90;
+  } else if (width < 1070) {
+    rightVal = -120;
+  }
+
+  if (direction === 'right' && transitionValue[category] > rightVal) {
     setTransitionValue({
       ...transitionValue,
-      [category]: transitionValue[category] - 31.15
+      [category]: transitionValue[category] - slideBy
     });
   } else if (direction === 'left' && transitionValue[category] < 0) {
     setTransitionValue({
       ...transitionValue,
-      [category]: transitionValue[category] + 31.15
+      [category]: transitionValue[category] + slideBy
     });
   }
 }
 
-function Categories({ history }) {
+function Categories({ history, width }) {
   const {
     state: { newsList },
     actions
   } = useContext(NewsStoreContext);
-  const [transitionValue, setTransitionValue] = useState({
+
+  const initialTransitionValue = {
     business: 0,
     entertainment: 0,
     general: 0,
@@ -89,7 +110,10 @@ function Categories({ history }) {
     science: 0,
     sports: 0,
     technology: 0
-  });
+  };
+  const [transitionValue, setTransitionValue] = useState(
+    initialTransitionValue
+  );
 
   useEffect(() => {
     getNewsList({ country: 'us', categories }).fork(
@@ -98,11 +122,23 @@ function Categories({ history }) {
     );
   }, []);
 
+  useEffect(() => {
+    window.addEventListener('resize', () =>
+      setTransitionValue(initialTransitionValue)
+    );
+
+    return function cleanup() {
+      window.removeEventListener('resize', () =>
+        setTransitionValue(initialTransitionValue)
+      );
+    };
+  }, []);
+
   return (
     <Page
       heading="Top 5 news by category from Great Brittain:"
       headingType="h2"
-      left="-1rem"
+      left="5rem"
     >
       <CategoriesList>
         {newsList.map((news, i) => (
@@ -120,7 +156,8 @@ function Categories({ history }) {
                     direction: 'left',
                     transitionValue,
                     setTransitionValue,
-                    category: categories[i]
+                    category: categories[i],
+                    width
                   })
                 }
                 size={32}
@@ -144,7 +181,8 @@ function Categories({ history }) {
                     direction: 'right',
                     transitionValue,
                     setTransitionValue,
-                    category: categories[i]
+                    category: categories[i],
+                    width
                   })
                 }
                 size={32}
@@ -158,4 +196,4 @@ function Categories({ history }) {
   );
 }
 
-export default withRouter(Categories);
+export default dimensionsHOC()(withRouter(Categories));
