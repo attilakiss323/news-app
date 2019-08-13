@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router';
 
 import Button from '../button/Button';
-import { urls } from '../../constants';
-import { NewsStoreContext } from '../../common';
+import MobileMenu from './MobileMenu';
+import DesktopMenu from './DesktopMenu';
+import { NewsStoreContext, dimensionsHOC } from '../../common';
 
 const StickyHeader = styled.div`
   display: flex;
@@ -15,74 +16,36 @@ const StickyHeader = styled.div`
   z-index: 2;
 `;
 
-const NavBtn = styled(Button)`
-  margin: 0;
-`;
-
-const Filler = styled.div`
-  flex-grow: 1;
-`;
-
-const NavLangBtn = styled(Button)`
-  width: 3rem;
-  margin: 0;
-`;
-
-function Navigation({ history }) {
+function Navigation({ history, width }) {
   const {
     state: { language },
     actions
   } = useContext(NewsStoreContext);
 
-  const handleClick = (e, route) => {
+  const handleNavigate = (e, route) => {
     e.preventDefault();
     history.push(route);
   };
 
   return (
     <StickyHeader>
-      <NavBtn
-        inverted
-        isActive={history.location.pathname === '/'}
-        link="/"
-        icon="home"
-        iconSize={16}
-        text="Top News"
-        onClick={e => handleClick(e, urls.news)}
-      />
-      <NavBtn
-        inverted
-        isActive={history.location.pathname === '/categories'}
-        link="/categories"
-        icon="categories"
-        iconSize={16}
-        text="Categories"
-        onClick={e => handleClick(e, urls.categories)}
-      />
-      <NavBtn
-        inverted
-        isActive={history.location.pathname === '/search'}
-        link="/search"
-        icon="search"
-        iconSize={16}
-        text="Search"
-        onClick={e => handleClick(e, urls.search)}
-      />
-      <Filler />
-      <NavLangBtn
-        onClick={() => actions.setLanguage('gb')}
-        inverted
-        isActive={language === 'gb'}
-        text="GB"
-      />
-      <NavLangBtn
-        onClick={() => actions.setLanguage('us')}
-        inverted
-        isActive={language === 'us'}
-        text="US"
-      />
+      {width > 640 ? (
+        <DesktopMenu
+          navigate={handleNavigate}
+          pathname={history.location.pathname}
+          language={language}
+          setLanguage={actions.setLanguage}
+        />
+      ) : (
+        <MobileMenu
+          navigate={handleNavigate}
+          pathname={history.location.pathname}
+          language={language}
+          setLanguage={actions.setLanguage}
+        />
+      )}
     </StickyHeader>
   );
 }
 
-export default withRouter(Navigation);
+export default dimensionsHOC()(withRouter(Navigation));
