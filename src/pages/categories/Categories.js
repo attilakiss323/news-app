@@ -101,7 +101,7 @@ function animateTransition({
   }
 }
 
-function Categories({ history, width }) {
+export function Categories({ history, width }) {
   const {
     state: { newsList, language },
     actions
