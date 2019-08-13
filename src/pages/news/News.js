@@ -6,12 +6,12 @@ import { getNews, NewsStoreContext } from '../../common';
 
 function News({ history }) {
   const {
-    state: { news },
+    state: { news, language },
     actions
   } = useContext(NewsStoreContext);
 
   useEffect(() => {
-    getNews({ country: 'us' }).fork(
+    getNews({ language }).fork(
       err => actions.setNewsError(err),
       res => actions.getNews(res.articles)
     );

@@ -11,12 +11,12 @@ function Category({
   }
 }) {
   const {
-    state: { news },
+    state: { news, language },
     actions
   } = useContext(NewsStoreContext);
 
   useEffect(() => {
-    getNews({ country: 'us', category }).fork(
+    getNews({ language, category }).fork(
       err => actions.setNewsError(err),
       res => actions.getNews(res.articles)
     );

@@ -1,13 +1,13 @@
 import { api } from '../../constants';
 import Async from 'crocks/Async';
 
-export function getNews({ country = 'us', search = '', category = '' } = {}) {
+export function getNews({ language = 'us', search = '', category = '' } = {}) {
   return Async.fromPromise(() =>
     fetch(
       `${
         api({
           params: {
-            country: 'us',
+            country: language,
             apiKey: process.env.REACT_APP_NEWS_APP_KEY,
             q: search,
             category
@@ -18,7 +18,7 @@ export function getNews({ country = 'us', search = '', category = '' } = {}) {
   )();
 }
 
-export function getNewsList({ country = 'us', categories }) {
+export function getNewsList({ language = 'us', categories }) {
   return Async.all(
     categories.map(category =>
       Async.fromPromise(() =>
@@ -26,7 +26,7 @@ export function getNewsList({ country = 'us', categories }) {
           `${
             api({
               params: {
-                country: 'us',
+                country: language,
                 apiKey: process.env.REACT_APP_NEWS_APP_KEY,
                 category: category,
                 pageSize: 5

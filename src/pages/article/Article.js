@@ -45,7 +45,7 @@ function Article({
 }) {
   const [article, setArticle] = useState({});
   const {
-    state: { news, newsList },
+    state: { news, newsList, language },
     actions
   } = useContext(NewsStoreContext);
 
@@ -64,7 +64,7 @@ function Article({
       setArticle(article);
     } else {
       getNews({
-        country: 'us',
+        language,
         search: title.replace(/~+/g, '?'),
         category
       }).fork(

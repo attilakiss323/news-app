@@ -7,13 +7,13 @@ import { getNews, NewsStoreContext } from '../../common';
 function Search({ history }) {
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
   const {
-    state: { news },
+    state: { news, language },
     actions
   } = useContext(NewsStoreContext);
 
   useEffect(() => {
     if (debouncedSearchValue) {
-      getNews({ country: 'us', search: debouncedSearchValue }).fork(
+      getNews({ language, search: debouncedSearchValue }).fork(
         err => actions.setNewsError(err),
         res => actions.getNews(res.articles)
       );

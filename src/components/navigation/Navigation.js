@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router';
 
 import Button from '../button/Button';
 import { urls } from '../../constants';
+import { NewsStoreContext } from '../../common';
 
 const StickyHeader = styled.div`
   display: flex;
@@ -28,6 +29,11 @@ const NavLangBtn = styled(Button)`
 `;
 
 function Navigation({ history }) {
+  const {
+    state: { language },
+    actions
+  } = useContext(NewsStoreContext);
+
   const handleClick = (e, route) => {
     e.preventDefault();
     history.push(route);
@@ -63,8 +69,18 @@ function Navigation({ history }) {
         onClick={e => handleClick(e, urls.search)}
       />
       <Filler />
-      <NavLangBtn inverted backgroundColor="grey4" text="GB" />
-      <NavLangBtn inverted text="US" />
+      <NavLangBtn
+        onClick={() => actions.setLanguage('gb')}
+        inverted
+        isActive={language === 'gb'}
+        text="GB"
+      />
+      <NavLangBtn
+        onClick={() => actions.setLanguage('us')}
+        inverted
+        isActive={language === 'us'}
+        text="US"
+      />
     </StickyHeader>
   );
 }

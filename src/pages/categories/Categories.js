@@ -98,7 +98,7 @@ function animateTransition({
 
 function Categories({ history, width }) {
   const {
-    state: { newsList },
+    state: { newsList, language },
     actions
   } = useContext(NewsStoreContext);
 
@@ -116,7 +116,7 @@ function Categories({ history, width }) {
   );
 
   useEffect(() => {
-    getNewsList({ country: 'us', categories }).fork(
+    getNewsList({ language, categories }).fork(
       err => actions.setNewsError(err),
       res => actions.getNewsList(res)
     );
