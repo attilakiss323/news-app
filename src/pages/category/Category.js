@@ -1,10 +1,11 @@
 import React, { useEffect, useContext } from 'react';
 import { withRouter } from 'react-router';
 
-import { Card, Page, CardList } from '../../components';
+import { Card, Page, CardList, Loading } from '../../components';
 import { getNews, NewsStoreContext } from '../../common';
 
 function Category({
+  history,
   match: {
     params: { id: category }
   }
@@ -16,7 +17,7 @@ function Category({
 
   useEffect(() => {
     getNews({ country: 'us', category }).fork(
-      err => console.log(err),
+      err => actions.setNewsError(err),
       res => actions.getNews(res.articles)
     );
   }, []);
@@ -27,15 +28,20 @@ function Category({
       headingType="h1"
     >
       <CardList>
-        {news.map(article => (
-          <Card
-            key={article.title}
-            title={article.title}
-            img={article.urlToImage}
-            description={article.description}
-            category={category}
-          />
-        ))}
+        {news
+          .map(news =>
+            news.map(article => (
+              <Card
+                key={article.title}
+                title={article.title}
+                img={article.urlToImage}
+                description={article.description}
+                category={category}
+                navigate={history.push}
+              />
+            ))
+          )
+          .option(<Loading />)}
       </CardList>
     </Page>
   );

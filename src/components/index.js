@@ -8,3 +8,5 @@ export { default as Tooltip } from './tooltip/Tooltip';
 export { default as Page } from './page/Page';
 export { default as SearchField } from './searchField/SearchField';
 export { default as CardList } from './cardList/CardList';
+export { default as Loading } from './loading/Loading';
+export { default as ErrorNotification } from './notification/Error';

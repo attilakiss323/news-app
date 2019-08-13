@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router';
 
 import { upperCaseFirstLetter } from '../../common';
-import { Card, Page, Icon, Heading } from '../../components';
+import { Card, Page, Icon, Heading, Loading } from '../../components';
 import { getNewsList, NewsStoreContext, dimensionsHOC } from '../../common';
 
 const categories = [
@@ -117,7 +117,7 @@ function Categories({ history, width }) {
 
   useEffect(() => {
     getNewsList({ country: 'us', categories }).fork(
-      err => console.log(err),
+      err => actions.setNewsError(err),
       res => actions.getNewsList(res)
     );
   }, []);
@@ -141,56 +141,59 @@ function Categories({ history, width }) {
       left="5rem"
     >
       <CategoriesList>
-        {newsList.map((news, i) => (
-          <div key={categories[i]}>
-            <CategoryHeading
-              type="h2"
-              onClick={() => history.push(`/category/${categories[i]}`)}
-            >
-              {upperCaseFirstLetter(categories[i])}
-            </CategoryHeading>
-            <CategoryList>
-              <ChevronLeft
-                onClick={() =>
-                  animateTransition({
-                    direction: 'left',
-                    transitionValue,
-                    setTransitionValue,
-                    category: categories[i],
-                    width
-                  })
-                }
-                size={32}
-                kind="chevron-left"
-              />
-              {news.articles.map(article => (
-                <CategoryCard
-                  navigate={history.push}
-                  category={categories[i]}
-                  transitionValue={transitionValue}
-                  key={article.description}
-                  title={article.title}
-                  img={article.urlToImage}
-                  description={article.description}
-                  category={categories[i]}
-                />
-              ))}
-              <ChevronRight
-                onClick={() =>
-                  animateTransition({
-                    direction: 'right',
-                    transitionValue,
-                    setTransitionValue,
-                    category: categories[i],
-                    width
-                  })
-                }
-                size={32}
-                kind="chevron-right"
-              />
-            </CategoryList>
-          </div>
-        ))}
+        {newsList
+          .map(newsList =>
+            newsList.map((news, i) => (
+              <div key={categories[i]}>
+                <CategoryHeading
+                  type="h2"
+                  onClick={() => history.push(`/category/${categories[i]}`)}
+                >
+                  {upperCaseFirstLetter(categories[i])}
+                </CategoryHeading>
+                <CategoryList>
+                  <ChevronLeft
+                    onClick={() =>
+                      animateTransition({
+                        direction: 'left',
+                        transitionValue,
+                        setTransitionValue,
+                        category: categories[i],
+                        width
+                      })
+                    }
+                    size={32}
+                    kind="chevron-left"
+                  />
+                  {news.articles.map(article => (
+                    <CategoryCard
+                      navigate={history.push}
+                      category={categories[i]}
+                      transitionValue={transitionValue}
+                      key={article.description}
+                      title={article.title}
+                      img={article.urlToImage}
+                      description={article.description}
+                    />
+                  ))}
+                  <ChevronRight
+                    onClick={() =>
+                      animateTransition({
+                        direction: 'right',
+                        transitionValue,
+                        setTransitionValue,
+                        category: categories[i],
+                        width
+                      })
+                    }
+                    size={32}
+                    kind="chevron-right"
+                  />
+                </CategoryList>
+              </div>
+            ))
+          )
+          .option(<Loading />)}
       </CategoriesList>
     </Page>
   );

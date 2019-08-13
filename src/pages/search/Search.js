@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { withRouter } from 'react-router';
 
-import { Card, Page, SearchField, CardList } from '../../components';
+import { Card, Page, SearchField, CardList, Loading } from '../../components';
 import { getNews, NewsStoreContext } from '../../common';
 
 function Search({ history }) {
@@ -14,7 +14,7 @@ function Search({ history }) {
   useEffect(() => {
     if (debouncedSearchValue) {
       getNews({ country: 'us', search: debouncedSearchValue }).fork(
-        err => console.log(err),
+        err => actions.setNewsError(err),
         res => actions.getNews(res.articles)
       );
     } else {
@@ -29,15 +29,19 @@ function Search({ history }) {
     >
       <SearchField searchCb={setDebouncedSearchValue} />
       <CardList>
-        {news.map(article => (
-          <Card
-            navigate={history.push}
-            key={article.title}
-            title={article.title}
-            img={article.urlToImage}
-            description={article.description}
-          />
-        ))}
+        {news
+          .map(news =>
+            news.map(article => (
+              <Card
+                navigate={history.push}
+                key={article.title}
+                title={article.title}
+                img={article.urlToImage}
+                description={article.description}
+              />
+            ))
+          )
+          .option(<Loading />)}
       </CardList>
     </Page>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { withRouter } from 'react-router';
 
-import { Card, Page, CardList } from '../../components';
+import { Card, Page, CardList, Loading } from '../../components';
 import { getNews, NewsStoreContext } from '../../common';
 
 function News({ history }) {
@@ -12,7 +12,7 @@ function News({ history }) {
 
   useEffect(() => {
     getNews({ country: 'us' }).fork(
-      err => console.log(err),
+      err => actions.setNewsError(err),
       res => actions.getNews(res.articles)
     );
   }, []);
@@ -20,15 +20,19 @@ function News({ history }) {
   return (
     <Page heading="Top news from Great Brittain:" headingType="h1">
       <CardList>
-        {news.map(article => (
-          <Card
-            key={article.title}
-            title={article.title}
-            img={article.urlToImage}
-            description={article.description}
-            navigate={history.push}
-          />
-        ))}
+        {news
+          .map(news =>
+            news.map(article => (
+              <Card
+                key={article.title}
+                title={article.title}
+                img={article.urlToImage}
+                description={article.description}
+                navigate={history.push}
+              />
+            ))
+          )
+          .option(<Loading />)}
       </CardList>
     </Page>
   );

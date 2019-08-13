@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
+import isObject from 'crocks/predicates/isObject';
+import safe from 'crocks/Maybe/safe';
+import getProp from 'crocks/Maybe/getProp';
 
 import { Page } from '../../components';
 import { getNews, NewsStoreContext } from '../../common';
@@ -42,38 +45,53 @@ function Article({
 }) {
   const [article, setArticle] = useState({});
   const {
-    state: { news, newsList }
+    state: { news, newsList },
+    actions
   } = useContext(NewsStoreContext);
 
   useEffect(() => {
     const allArticles = [
-      ...newsList.map(news => news.articles).flat(),
-      ...news
+      ...newsList
+        .map(newsList => newsList.map(news => news.articles).flat())
+        .option([]),
+      ...news.option([])
     ];
+
     if (allArticles.length > 0) {
       const article = allArticles.find(
-        article => article.title === title.replace(/\~+/g, '?')
+        article => article.title === title.replace(/~+/g, '?')
       );
       setArticle(article);
     } else {
       getNews({
         country: 'us',
-        search: title.replace(/\~+/g, '?'),
+        search: title.replace(/~+/g, '?'),
         category
-      }).fork(err => console.log(err), res => setArticle(res.articles[0]));
+      }).fork(
+        err => actions.setNewsError(err),
+        res => setArticle(res.articles[0])
+      );
     }
   }, []);
 
-  if (article === undefined) {
-    return (
-      <Page heading="No such article" headingType="h1" left="14rem"></Page>
-    );
-  }
-
   return (
-    <Page heading={article.title} headingType="h1" left="14rem">
-      <Image src={article.urlToImage} />
-      <Content>{article.content}</Content>
+    <Page
+      heading={safe(isObject, article)
+        .chain(getProp('title'))
+        .option('Loading...')}
+      headingType="h1"
+      left="14rem"
+    >
+      <Image
+        src={safe(isObject, article)
+          .chain(getProp('urlToImage'))
+          .option('')}
+      />
+      <Content>
+        {safe(isObject, article)
+          .chain(getProp('content'))
+          .option('')}
+      </Content>
     </Page>
   );
 }
