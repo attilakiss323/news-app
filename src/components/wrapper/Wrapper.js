@@ -138,7 +138,6 @@ const Reset = createGlobalStyle`${reset}`;
 
 const Wrap = styled.div`
   margin: 5rem 0;
-  display: felx;
 `;
 
 function Wrapper({ headingType, Heading, children }) {
