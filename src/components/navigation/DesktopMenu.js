@@ -49,12 +49,14 @@ function DesktopMenu({ navigate, pathname, language, setLanguage }) {
       />
       <Filler />
       <NavLangBtn
+        disabled={pathname.includes('article')}
         onClick={() => setLanguage('gb')}
         inverted
         isActive={language === 'gb'}
         text="GB"
       />
       <NavLangBtn
+        disabled={pathname.includes('article')}
         onClick={() => setLanguage('us')}
         inverted
         isActive={language === 'us'}

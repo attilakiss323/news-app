@@ -55,15 +55,18 @@ function Button(props) {
     icon,
     iconSize,
     link,
+    onClick = () => {},
     isActive = false,
-    inverted = false
+    inverted = false,
+    disabled = false
   } = props;
 
   return (
     <Btn
+      {...props}
       backgroundColor={setColor(isActive, inverted)}
       inverted={inverted}
-      {...props}
+      onClick={e => (disabled ? e.preventDefault() : onClick(e))}
     >
       {icon && (
         <BtnIcon inverted={inverted ? 1 : 0} kind={icon} size={iconSize} />

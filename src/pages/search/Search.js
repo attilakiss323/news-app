@@ -20,7 +20,7 @@ function Search({ history }) {
     } else {
       actions.getNews([]);
     }
-  }, [debouncedSearchValue]);
+  }, [debouncedSearchValue, language]);
 
   return (
     <Page

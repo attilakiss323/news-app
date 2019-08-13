@@ -120,7 +120,7 @@ function Categories({ history, width }) {
       err => actions.setNewsError(err),
       res => actions.getNewsList(res)
     );
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     window.addEventListener('resize', () =>

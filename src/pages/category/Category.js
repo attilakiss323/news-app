@@ -20,7 +20,7 @@ function Category({
       err => actions.setNewsError(err),
       res => actions.getNews(res.articles)
     );
-  }, []);
+  }, [language]);
 
   return (
     <Page

@@ -15,7 +15,7 @@ function News({ history }) {
       err => actions.setNewsError(err),
       res => actions.getNews(res.articles)
     );
-  }, []);
+  }, [language]);
 
   return (
     <Page heading="Top news from Great Brittain:" headingType="h1">

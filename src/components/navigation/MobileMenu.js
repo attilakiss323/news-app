@@ -117,19 +117,27 @@ function MobileMenu({ language, setLanguage, navigate, pathname }) {
         </NavDropdown>
       )}
       <Filler />
-      <NavLangSelector onClick={() => toggleLangMenu(!isLangMenuOpen)}>
+      <NavLangSelector
+        onClick={() =>
+          pathname.includes('article')
+            ? () => {}
+            : toggleLangMenu(!isLangMenuOpen)
+        }
+      >
         {language}
         <MobileIcon color={theme.color.white} kind="chevron-bottom" size={12} />
       </NavLangSelector>
       {isLangMenuOpen && (
         <NavLangDropdown>
           <NavLangBtn
+            disabled={pathname.includes('article')}
             onClick={() => handleSetLanguage('gb')}
             inverted
             isActive={language === 'gb'}
             text="GB"
           />
           <NavLangBtn
+            disabled={pathname.includes('article')}
             onClick={() => handleSetLanguage('us')}
             inverted
             isActive={language === 'us'}
