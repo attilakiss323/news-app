@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import { withRouter } from 'react-router';
 
 import { Card, Page, CardList, Loading } from '../../components';
-import { getNews, NewsStoreContext } from '../../common';
+import { getNews, NewsStoreContext, getCountryFullName } from '../../common';
 
 function News({ history }) {
   const {
@@ -18,7 +18,10 @@ function News({ history }) {
   }, [language]);
 
   return (
-    <Page heading="Top news from Great Brittain:" headingType="h1">
+    <Page
+      heading={`Top news from ${getCountryFullName(language)}:`}
+      headingType="h1"
+    >
       <CardList>
         {news
           .map(news =>

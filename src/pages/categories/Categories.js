@@ -4,7 +4,12 @@ import { withRouter } from 'react-router';
 
 import { upperCaseFirstLetter } from '../../common';
 import { Card, Page, Icon, Heading, Loading } from '../../components';
-import { getNewsList, NewsStoreContext, dimensionsHOC } from '../../common';
+import {
+  getNewsList,
+  NewsStoreContext,
+  dimensionsHOC,
+  getCountryFullName
+} from '../../common';
 
 const categories = [
   'business',
@@ -136,7 +141,7 @@ function Categories({ history, width }) {
 
   return (
     <Page
-      heading="Top 5 news by category from Great Brittain:"
+      heading={`Top 5 news by category from ${getCountryFullName(language)}:`}
       headingType="h2"
       left="5rem"
     >

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { withRouter } from 'react-router';
 
 import { Card, Page, SearchField, CardList, Loading } from '../../components';
-import { getNews, NewsStoreContext } from '../../common';
+import { getNews, NewsStoreContext, getCountryFullName } from '../../common';
 
 function Search({ history }) {
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
@@ -24,7 +24,7 @@ function Search({ history }) {
 
   return (
     <Page
-      heading="Search top news from Great Brittain by term:"
+      heading={`Search top news from ${getCountryFullName(language)} by term:`}
       headingType="h1"
     >
       <SearchField searchCb={setDebouncedSearchValue} />

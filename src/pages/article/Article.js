@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import isObject from 'crocks/predicates/isObject';
 import safe from 'crocks/Maybe/safe';
 import getProp from 'crocks/Maybe/getProp';
+import { withRouter } from 'react-router';
 
-import { Page } from '../../components';
+import { Page, Icon } from '../../components';
 import { getNews, NewsStoreContext } from '../../common';
 
 const Image = styled.img`
@@ -38,7 +39,30 @@ const Content = styled.div`
   }
 `;
 
+const Back = styled.a`
+  text-decoration: none;
+  margin: 0 auto;
+  text-align: left;
+  width: 70%;
+  margin-top: 1rem
+  cursor: pointer
+
+  @media (max-width: 1440px) and (min-width: 1200px) {
+    width: 80%;
+  }
+
+  @media (max-width: 1200px) {
+    width: 90%;
+    font-size: ${({ theme, type }) => `${theme.font.heading.h3.fontSize}rem`};
+  }
+`;
+
+const BackIcon = styled(Icon)`
+  vertical-align: bottom;
+`;
+
 function Article({
+  history,
   match: {
     params: { id: title, category }
   }
@@ -92,8 +116,12 @@ function Article({
           .chain(getProp('content'))
           .option('')}
       </Content>
+      <Back onClick={() => history.goBack()}>
+        <BackIcon kind="chevron-left" size={16} />
+        Back to list
+      </Back>
     </Page>
   );
 }
 
-export default Article;
+export default withRouter(Article);

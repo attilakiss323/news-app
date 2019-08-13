@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import { withRouter } from 'react-router';
 
 import { Card, Page, CardList, Loading } from '../../components';
-import { getNews, NewsStoreContext } from '../../common';
+import { getNews, NewsStoreContext, getCountryFullName } from '../../common';
 
 function Category({
   history,
@@ -24,7 +24,7 @@ function Category({
 
   return (
     <Page
-      heading={`Top ${category} news from Great Brittain:`}
+      heading={`Top ${category} news from ${getCountryFullName(language)}:`}
       headingType="h1"
     >
       <CardList>
