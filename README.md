@@ -3,7 +3,7 @@
 ### Start app
 
 - yarn
-- set REACT_APP_NEWS_APP_KEY to api key
+- create `.env` with `REACT_APP_NEWS_APP_KEY` as your apiKey
 - yarn start
 
 ### Pages
